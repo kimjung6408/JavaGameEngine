@@ -2,6 +2,7 @@ package Shaders;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import Cam.Camera;
 import Entities.Material;
@@ -25,6 +26,7 @@ public class StaticShader extends ShaderProgram {
 	private int loc_shineDamper;
 	private int loc_reflectivity;
 	private int loc_cameraPos;
+	private int loc_plane;
 	
 	public StaticShader()
 	{
@@ -50,11 +52,17 @@ public class StaticShader extends ShaderProgram {
 		loc_shineDamper=super.getUniformLocation("shineDamper");
 		loc_reflectivity=super.getUniformLocation("reflectivity");
 		loc_cameraPos=super.getUniformLocation("cameraPos");
+		loc_plane=super.getUniformLocation("plane");
 	}
 	
 	public void loadWorldMatrix(Matrix4f matrix)
 	{
 		super.loadMatrix(loc_WorldMat, matrix);
+	}
+	
+	public void loadClipPlane(Vector4f plane)
+	{
+		super.loadVector4(loc_plane	, plane);
 	}
 	
 	public void loadViewMatrix(Camera camera)

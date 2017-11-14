@@ -5,6 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import RenderEngine.DisplayManager;
 import ToolBox.Maths;
 
 public class Camera {
@@ -42,6 +43,11 @@ public class Camera {
 		this.Pitch+=pitchAngle;
 	}
 	
+	public void InvertPitch()
+	{
+		this.Pitch=-Pitch;
+	}
+	
 	public void yaw(float yawAngle)
 	{
 		this.Yaw+=yawAngle;
@@ -77,27 +83,29 @@ public class Camera {
 	
 	public void Update()
 	{
+		float dt=DisplayManager.DeltaTime();
+		float moveDelta=200.0f*dt;
 		if(Keyboard.isKeyDown(Keyboard.KEY_A))
 		{
-			MoveRight(-5.0f);
+			MoveRight(-moveDelta);
 		}
 		else 	if(Keyboard.isKeyDown(Keyboard.KEY_D))
 		{
-			MoveRight(5.0f);
+			MoveRight(moveDelta);
 		}
 		else 	if(Keyboard.isKeyDown(Keyboard.KEY_W))
 		{
-			MoveForward(5.0f);
+			MoveForward(moveDelta);
 		}
 		else 	if(Keyboard.isKeyDown(Keyboard.KEY_S))
 		{
-			MoveForward(-5.0f);
+			MoveForward(-moveDelta);
 		}
 		
 		if(Mouse.isButtonDown(0))
 		{
-			Pitch+=(float)Mouse.getDY()/10F;
-			Yaw+=(float)Mouse.getDX()/10f;
+			Pitch+=(float)Mouse.getDY()*10.0f*dt;
+			Yaw-=(float)Mouse.getDX()*10.0f*dt;;
 		}
 	}
 	

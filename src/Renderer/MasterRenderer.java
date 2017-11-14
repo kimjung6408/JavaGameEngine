@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector4f;
 
 import Cam.Camera;
 
@@ -14,6 +15,7 @@ import Entities.Entity;
 import GUIs.GUIRenderer;
 import GUIs.GUIShader;
 import GUIs.GUITexture;
+import Lights.Light;
 import Lights.PointLight;
 import Models.TexturedModel;
 import RenderEngine.Loader;
@@ -62,14 +64,30 @@ public class MasterRenderer {
 		GL11.glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 	}
 	
+	public void RenderScene(List<Entity> entities, List<Terrain> terrains, List<Light> lights, Camera camera, Vector4f clipPlane)
+	{
+		for(Terrain terrain : terrains)
+		{
+			processTerrain(terrain);
+		}
+		
+		for(Entity entity : entities)
+		{
+			processEntity(entity);
+		}
+		
+		Render((PointLight)lights.get(0),camera,clipPlane);
+		
+	}
 	
-	public void Render(PointLight sun, Camera cam)
+	
+	public void Render(PointLight sun, Camera cam, Vector4f clipPlane)
 	{
 		prepare();
 		
 		//render entity
 		entityShader.start();
-		
+		entityShader.loadClipPlane(clipPlane);
 		entityShader.loadLight(sun);
 		entityShader.loadViewMatrix(cam);
 		entityShader.loadProjMatrix(cam.getProjMatrix());
@@ -81,6 +99,7 @@ public class MasterRenderer {
 		terrainShader.start();
 		terrainShader.loadViewMatrix(cam);
 		terrainShader.loadProjMatrix(cam.getProjMatrix());
+		terrainShader.loadClipPlane(clipPlane);
 		terrainShader.loadLight(sun);
 		
 		terrainRenderer.Render(terrains);

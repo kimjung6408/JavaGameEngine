@@ -149,6 +149,11 @@ public abstract class ShaderProgram {
 		GL20.glUniform2f(loc, vec.x, vec.y);
 	}
 	
+	protected void loadInt(int loc, int value)
+	{
+		GL20.glUniform1i(loc, value);
+	}
+	
 	protected void loadBoolean(int location, boolean value)
 	{
 		float toLoad=0;

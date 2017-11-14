@@ -26,7 +26,6 @@ public class AlphaAnimator implements GUIAnimator {
 		{
 			alpha-=deltaAlpha;
 			gui.setAlpha(alpha);
-			System.out.println(""+gui.getAlpha());
 			if(gui.getAlpha()<=0.0f)
 			{
 				loop_direction=1;

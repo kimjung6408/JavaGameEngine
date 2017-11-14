@@ -2,6 +2,7 @@ package Shaders;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import Cam.Camera;
 import Entities.Material;
@@ -24,6 +25,7 @@ public class TerrainShader extends ShaderProgram {
 	private int loc_reflectivity;
 	private int loc_cameraPos;
 	private int loc_texDensity;
+	private int loc_plane;
 	
 	public TerrainShader()
 	{
@@ -54,7 +56,7 @@ public class TerrainShader extends ShaderProgram {
 		loc_reflectivity=super.getUniformLocation("reflectivity");
 		loc_cameraPos=super.getUniformLocation("cameraPos");
 		loc_texDensity=super.getUniformLocation("texDensity");
-		
+		loc_plane=super.getUniformLocation("plane");
 	}
 	
 	public void loadTextureDensity(float texDensity)
@@ -71,6 +73,11 @@ public class TerrainShader extends ShaderProgram {
 	{
 		Matrix4f matrix=Maths.createViewMatrix(camera);
 		super.loadMatrix(loc_ViewMat, matrix);
+	}
+	
+	public void loadClipPlane(Vector4f plane)
+	{
+		super.loadVector4(loc_plane, plane);
 	}
 
 	public void loadLight(PointLight light)

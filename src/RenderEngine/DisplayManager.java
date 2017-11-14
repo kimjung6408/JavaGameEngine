@@ -1,6 +1,7 @@
 package RenderEngine;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -13,6 +14,8 @@ public class DisplayManager {
 	public static final int HEIGHT=720;
 	public static final int FPS_CAP=120;
 	
+	private static long lastFrameTime;
+	private static float delta;
 
 	public static void createDisplay(){
 		
@@ -34,6 +37,7 @@ public class DisplayManager {
 		
 		//set viewport
 		GL11.glViewport(0, 0, WIDTH, HEIGHT);
+		lastFrameTime=getCurrentTime();
 	}
 	
 	public static void updateDisplay(){
@@ -41,8 +45,22 @@ public class DisplayManager {
 		//120 FPS 주사율에 디스플레이를 맞춘다.
 		Display.sync(120);
 		Display.update();
+		long currentFrameTime=getCurrentTime();
+		delta=(currentFrameTime-lastFrameTime)/1000f;
+		
+		lastFrameTime=currentFrameTime;
 	}
 	
 	public static void closeDisplay(){}
 	
+	private static long getCurrentTime()
+	{
+		return Sys.getTime()*1000/Sys.getTimerResolution();
+	}
+	
+	
+	public static float DeltaTime()
+	{
+		return delta;		
+	}
 }
